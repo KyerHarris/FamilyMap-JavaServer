@@ -14,14 +14,6 @@ public class LoginRequest {
   private String username;
   private String password;
 
-  /**
-   * verifies the information provided
-   * @return the LoginResult
-   */
-  public LoginResult verifyUser(){
-    return null;
-  }
-
   public LoginRequest(String username, String password) {
     this.username=username;
     this.password=password;

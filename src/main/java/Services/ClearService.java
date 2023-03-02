@@ -1,5 +1,6 @@
 package Services;
 
+import Requests.ClearRequest;
 import Results.ClearResult;
 
 /**
@@ -13,6 +14,9 @@ public class ClearService {
    * @return ClearResult
    */
   public ClearResult clear(){
-    return null;
+    ClearResult clearResult = new ClearResult();
+    ClearRequest clearRequest = new ClearRequest();
+    clearResult.setSuccess(clearRequest.clear());
+    return clearResult;
   }
 }
