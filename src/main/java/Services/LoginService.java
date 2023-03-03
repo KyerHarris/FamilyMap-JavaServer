@@ -1,13 +1,17 @@
 package Services;
 
+import DataAccess.AuthTokenDao;
 import DataAccess.DataAccessException;
+import Model.AuthToken;
 import Requests.LoginRequest;
 import Results.LoginResult;
 import DataAccess.UserDao;
 import DataAccess.Database;
 import Model.User;
 
+import java.lang.Object;
 import java.sql.Connection;
+import java.util.UUID;
 
 /**
  * LoginService
@@ -26,6 +30,7 @@ public class LoginService {
     db = new Database();
     try {
       Connection conn = db.getConnection();
+      AuthTokenDao aDao = new AuthTokenDao(conn);
       UserDao uDao = new UserDao(conn);
       User user = uDao.find(request.getUsername());
       if(user == null){
@@ -36,8 +41,13 @@ public class LoginService {
         loginResult.setError("password not correct");
         return loginResult;
       }
-      //generate authtoken
-      //set authtoken in table
+      //Creating and inserting Authtoken
+      UUID uuid = UUID.randomUUID();
+      AuthToken authToken = new AuthToken(uuid.toString(), user.getUsername());
+      aDao.insert(authToken);
+
+      //updating information in loginResult
+      loginResult.setAuthToken(uuid.toString());
       loginResult.setUsername(user.getUsername());
       loginResult.setPersonID(user.getPersonID());
       db.closeConnection(true);
@@ -47,9 +57,7 @@ public class LoginService {
       db.closeConnection(false);
       return loginResult;
     }
-    //check if username and password are in the database.
-    //add the personID
-    //generate and Authtoken
+
     loginResult.setSuccess(true);
     return loginResult;
   }

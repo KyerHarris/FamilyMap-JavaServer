@@ -19,6 +19,8 @@ import Handlers.*;
 */
 public class Server {
 
+  //TODO: how to get started document in canvas
+
   // The maximum number of waiting incoming connections to queue.
   // While this value is necessary, for our purposes it is unimportant.
   // Take CS 460 for a deeper understanding of what it means.
@@ -72,18 +74,6 @@ public class Server {
     // forwards the request to the handler for that URL path.
     System.out.println("Creating contexts");
 
-    // Create and install the HTTP handler for the "/games/list" URL path.
-    // When the HttpServer receives an HTTP request containing the
-    // "/games/list" URL path, it will forward the request to ListGamesHandler
-    // for processing.
-    server.createContext("/games/list", new ListGamesHandler());
-
-    // Create and install the HTTP handler for the "/routes/claim" URL path.
-    // When the HttpServer receives an HTTP request containing the
-    // "/routes/claim" URL path, it will forward the request to ClaimRouteHandler
-    // for processing.
-    server.createContext("/routes/claim", new ClaimRouteHandler());
-
     // Create and install the "default" (or "file") HTTP handler.
     // All requests that do not match the other handler URLs
     // will be passed to this handle.
@@ -93,7 +83,7 @@ public class Server {
 
     server.createContext("/user/register", new RegisterHandler());
 
-    server.createContext("user/login", new LoginHandler());
+    server.createContext("/user/login", new LoginHandler());
 
     server.createContext("/clear", new ClearHandler());
 

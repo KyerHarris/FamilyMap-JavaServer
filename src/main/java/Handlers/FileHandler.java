@@ -4,10 +4,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.nio.file.Files;
 
 public class FileHandler implements HttpHandler {
   @Override
@@ -36,57 +35,53 @@ public class FileHandler implements HttpHandler {
       // Only allow POST requests for this operation.
       // This operation requires a POST request, because the
       // client is "posting" information to the server for processing.
-      if (exchange.getRequestMethod().toLowerCase().equals("post")) {
+      if (exchange.getRequestMethod().toLowerCase().equals("get")) {
 
-        // Get the HTTP request headers
+        /*
         Headers reqHeaders = exchange.getRequestHeaders();
-        // Check to see if an "Authorization" header is present
-        if (reqHeaders.containsKey("Authorization")) {
+        InputStream reqBody = exchange.getRequestBody();
+        String reqData = readString(reqBody);
+        System.out.println(reqData);
+         */
 
-          // Extract the auth token from the "Authorization" header
-          String authToken = reqHeaders.getFirst("Authorization");
-
-          // Verify that the auth token is the one we're looking for
-          // (this is not realistic, because clients will use different
-          // auth tokens over time, not the same one all the time).
-          if (authToken.equals("afj232hj2332")) {
-
-            // Extract the JSON string from the HTTP request body
-
-            // Get the request body input stream
-            InputStream reqBody = exchange.getRequestBody();
-
-            // Read JSON string from the input stream
-            String reqData = readString(reqBody);
-
-            // Display/log the request JSON data
-            System.out.println(reqData);
-
-            // TODO: Claim a route based on the request data
-
-						/*
-						LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
-
-						LoginService service = new LoginService();
-						LoginResult result = service.login(request);
-
-						exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-						OutputStream resBody = exchange.getResponseBody();
-						gson.toJson(result, resBody);
-						resBody.close();
-						*/
-
-            // Start sending the HTTP response to the client, starting with
-            // the status code and any defined headers.
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-            // We are not sending a response body, so close the response body
-            // output stream, indicating that the response is complete.
-            exchange.getResponseBody().close();
-
-            success = true;
-          }
+        //enter as a get method with a url
+        String urlPath = exchange.getRequestURI().toString();
+        if(urlPath.equals(File.separator) || urlPath == null || urlPath.equals("/")){
+          StringBuilder temp = new StringBuilder();
+          temp.append("web");
+          temp.append(File.separator);
+          temp.append("index.html");
+          urlPath = temp.toString();
         }
+        else{
+          StringBuilder temp = new StringBuilder();
+          temp.append("web");
+          temp.append(urlPath);
+          urlPath = temp.toString();
+        }
+
+        File file = new File(urlPath);
+
+        // Start sending the HTTP response to the client, starting with
+        // the status code and any defined headers.
+        if(file.exists()) {
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+          OutputStream resBody = exchange.getResponseBody();
+          Files.copy(file.toPath(), resBody);
+          resBody.close();
+        }
+        else{
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+        }
+        // We are not sending a response body, so close the response body
+        // output stream, indicating that the response is complete.
+        exchange.getResponseBody().close();
+
+        success = true;
+      }
+      else {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_METHOD, 0);
+        exchange.getResponseBody().close();
       }
 
       if (!success) {
