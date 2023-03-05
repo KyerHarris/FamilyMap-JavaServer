@@ -49,8 +49,6 @@ R
 "src/main/java/Model/AuthToken.java,e\6\e6e45c75dee0f967b287cfbb327933073880abe5
 X
 (src/test/java/passoff/PersonDaoTest.java,d\3\d3d4455f0ffb1091cdab1f68d3f5d4d5f8e25aef
-V
-&src/main/java/Results/ClearResult.java,8\f\8f5dbf283c59d2edd790ad3b22757b01c4bdd8d7
 N
 src/main/java/Model/Event.java,1\4\141be353b7c5f1abc4fc5b0743a77e5ae3bb55e2
 Z
@@ -69,12 +67,6 @@ M
 -src/main/java/Handlers/ClaimRouteHandler.java,5\6\569cb223961c2f225848dcb1507a11ecb5122623
 L
 JavaDocs/Handlers/Clear.html,d\f\df96df5e49ed49960bef0b4459c6dda2401414de
-X
-(src/main/java/Handlers/ClearHandler.java,b\7\b78cff9ef5f13cc1a5c543fdcb8333342a1cddd2
-X
-(src/main/java/Requests/ClearRequest.java,f\5\f51bc93bcfa2c420582d8a18710e0e6fab95f77f
-X
-(src/main/java/Services/ClearService.java,5\2\525983faf1923b622837dd6ddaf378a68b55b5eb
 R
 "src/main/java/Handlers/Client.java,7\8\780ab9b28206dcc0243d37cfcd71be32ea5b4240
 X
@@ -99,3 +91,7 @@ O
 JavaDocs/Handlers/Register.html,0\8\08e441fc1abe93f7e7fcd6701b2a03f55bf411b3
 [
 +src/main/java/Handlers/RegisterHandler.java,1\1\11bb16f0a48565d0491353c83bccde49f8a0f5b7
+I
+src/main/java/Server.java,e\c\ecc6492793dffc43783ce29b8ef95b5f8da90998
+W
+'src/main/java/Handlers/FileHandler.java,0\b\0b3c100f4db22a5a4e58f81336745a6f8a9bba6a

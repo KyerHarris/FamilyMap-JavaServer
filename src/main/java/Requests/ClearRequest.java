@@ -10,10 +10,5 @@ import DataAccess.EventDao;
  * Deletes ALL data from the database, including user, authtoken, person, and event data
  */
 public class ClearRequest {
-  public boolean clear(){
-    boolean cleared = false;
 
-
-    return cleared;
-  }
 }

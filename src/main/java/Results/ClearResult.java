@@ -9,7 +9,7 @@ public class ClearResult {
    * bool success
    * Whether the request succeeded or failed
    */
-  private boolean success;
+  private boolean success = false;
 
   public boolean isSuccess() {
     return success;

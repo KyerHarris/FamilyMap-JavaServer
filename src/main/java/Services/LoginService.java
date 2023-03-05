@@ -19,7 +19,6 @@ import java.util.UUID;
  * Returns an authtoken.
  */
 public class LoginService {
-  private Database db;
   /**
    * attempts to log the user in
    * @param request
@@ -27,7 +26,7 @@ public class LoginService {
    */
   public LoginResult login(LoginRequest request){
     LoginResult loginResult = new LoginResult();
-    db = new Database();
+    Database db = new Database();
     try {
       Connection conn = db.getConnection();
       AuthTokenDao aDao = new AuthTokenDao(conn);
