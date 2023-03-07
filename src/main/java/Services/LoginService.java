@@ -1,15 +1,15 @@
 package Services;
 
-import DataAccess.AuthTokenDao;
-import DataAccess.DataAccessException;
-import Model.AuthToken;
 import Requests.LoginRequest;
 import Results.LoginResult;
+
+import DataAccess.AuthTokenDao;
+import DataAccess.DataAccessException;
 import DataAccess.UserDao;
 import DataAccess.Database;
 import Model.User;
+import Model.AuthToken;
 
-import java.lang.Object;
 import java.sql.Connection;
 import java.util.UUID;
 
@@ -29,27 +29,13 @@ public class LoginService {
     Database db = new Database();
     try {
       Connection conn = db.getConnection();
-      AuthTokenDao aDao = new AuthTokenDao(conn);
-      UserDao uDao = new UserDao(conn);
-      User user = uDao.find(request.getUsername());
-      if(user == null){
-        loginResult.setError("username not found");
-        return loginResult;
+      loginResult = login(conn, request);
+      if(loginResult.isSuccess()) {
+        db.closeConnection(true);
       }
-      else if(user.getPassword() != request.getPassword()){
-        loginResult.setError("password not correct");
-        return loginResult;
+      else{
+        db.closeConnection(false);
       }
-      //Creating and inserting Authtoken
-      UUID uuid = UUID.randomUUID();
-      AuthToken authToken = new AuthToken(uuid.toString(), user.getUsername());
-      aDao.insert(authToken);
-
-      //updating information in loginResult
-      loginResult.setAuthToken(uuid.toString());
-      loginResult.setUsername(user.getUsername());
-      loginResult.setPersonID(user.getPersonID());
-      db.closeConnection(true);
     }
     catch(DataAccessException error){
       loginResult.setError("Login Request Failed");
@@ -57,7 +43,6 @@ public class LoginService {
       return loginResult;
     }
 
-    loginResult.setSuccess(true);
     return loginResult;
   }
 
@@ -71,7 +56,7 @@ public class LoginService {
         loginResult.setError("username not found");
         return loginResult;
       }
-      else if(user.getPassword() != request.getPassword()){
+      else if(!user.getPassword().equals(request.getPassword())){
         loginResult.setError("password not correct");
         return loginResult;
       }

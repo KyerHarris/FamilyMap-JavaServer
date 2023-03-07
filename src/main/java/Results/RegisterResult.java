@@ -26,15 +26,8 @@ public class RegisterResult {
   private String authtoken;
   private String username;
   private String personID;
-  boolean success;
+  boolean success = false;
   private String error;
-
-  public RegisterResult(String authtoken, String username, String personID, boolean success) {
-    this.authtoken=authtoken;
-    this.username=username;
-    this.personID=personID;
-    this.success=success;
-  }
 
   public String getError() {
     return error;
