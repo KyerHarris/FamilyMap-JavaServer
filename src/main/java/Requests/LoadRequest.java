@@ -1,5 +1,7 @@
 package Requests;
 
+import Model.*;
+
 /**
  * LoadRequest
  * Clears all data from the database (just like the /clear API)
@@ -11,7 +13,7 @@ public class LoadRequest {
    * string persons
    * string events
    */
-  private String users;
-  private String persons;
-  private String events;
+  private User[] users;
+  private Person[] persons;
+  private Event[] events;
 }

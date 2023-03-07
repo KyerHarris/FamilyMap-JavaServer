@@ -1,6 +1,5 @@
 package Services;
 
-import Requests.ClearRequest;
 import Results.ClearResult;
 
 import DataAccess.*;
@@ -17,7 +16,7 @@ public class ClearService {
    * clears the database
    * @return ClearResult
    */
-  public ClearResult clear(ClearRequest request){
+  public ClearResult clear(){
     ClearResult clearResult = new ClearResult();
     Database db = new Database();
     try{
@@ -32,9 +31,11 @@ public class ClearService {
       pDao.clear();
       eDao.clear();
 
+      clearResult.setSuccess(true);
       db.closeConnection(true);
     }
     catch (DataAccessException error){
+      clearResult.setError("failed to clear database");
       error.printStackTrace();
       db.closeConnection(false);
       return clearResult;

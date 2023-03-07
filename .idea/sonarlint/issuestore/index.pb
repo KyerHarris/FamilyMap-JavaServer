@@ -1,26 +1,14 @@
 
 V
 &src/main/java/DataAccess/Database.java,f\a\faddfaada41291faaf1347aca07a331a2437434a
-V
-&src/main/java/Results/EventResult.java,9\e\9e98ba31ce0c23e86cacb7b3cde49fd666789089
-Y
-)src/main/java/Results/RegisterResult.java,a\f\af0a7fd5990d218d580783179d93d57554c9d585
-X
-(src/main/java/Results/PersonResults.java,7\b\7b6fa300bd77f299583fc9f3ee212e36487b2df0
 [
 +src/main/java/Requests/RegisterRequest.java,d\9\d9268efd9a946bb5ec8fb182abd5f67b0f898d9c
-U
-%src/main/java/Results/FillResult.java,c\9\c9d68aedc2831312c6e27ad3a771d5f156658dad
 W
 'src/main/java/Requests/FillRequest.java,c\6\c632dcc890431c7e7a4af6d94fedbef32a0980bd
-W
-'src/main/java/Requests/LoadRequest.java,3\5\35f8cff60f09705a4e2dd319e4c22f6d1e10f078
 Y
 )src/main/java/Requests/PersonRequest.java,5\f\5f6f9f9ba20826505be2c117a9a215c9fc3c8435
 X
 (src/main/java/Services/EventService.java,3\b\3bc7cc8cf85cf250921d1030b42d5ccdc4360088
-U
-%src/main/java/Results/LoadResult.java,8\3\8321e64613aa8fc69ea64ad992aa805f5eb66fb4
 W
 'src/main/java/Services/FillService.java,d\9\d9f184b782fc4e70a81bd7abe86be5704b1a4140
 W
@@ -63,8 +51,6 @@ U
 %src/main/java/DataAccess/UserDao.java,5\1\51abec407757a873356b63fdb2d9affc03a1c7ff
 M
 src/main/java/Model/User.java,a\4\a4a024c000f0299377044efbf7bdd3dfe84936aa
-]
--src/main/java/Handlers/ClaimRouteHandler.java,5\6\569cb223961c2f225848dcb1507a11ecb5122623
 L
 JavaDocs/Handlers/Clear.html,d\f\df96df5e49ed49960bef0b4459c6dda2401414de
 R
@@ -75,8 +61,6 @@ K
 JavaDocs/Handlers/Fill.html,4\c\4c5994dbae43909b4b046e9e948d71222b43623a
 W
 'src/main/java/Handlers/FillHandler.java,3\2\32db730cdbf7247e72957c0911a39a1d07a6214e
-\
-,src/main/java/Handlers/ListGamesHandler.java,1\a\1a9bafbf76e41e5a597a5a970e5d84b4d703342e
 W
 'src/main/java/Handlers/LoadHandler.java,7\f\7fc0c5a5d07b3b95172681f9e28b8798864d6776
 L
@@ -91,7 +75,5 @@ O
 JavaDocs/Handlers/Register.html,0\8\08e441fc1abe93f7e7fcd6701b2a03f55bf411b3
 [
 +src/main/java/Handlers/RegisterHandler.java,1\1\11bb16f0a48565d0491353c83bccde49f8a0f5b7
-I
-src/main/java/Server.java,e\c\ecc6492793dffc43783ce29b8ef95b5f8da90998
 W
 'src/main/java/Handlers/FileHandler.java,0\b\0b3c100f4db22a5a4e58f81336745a6f8a9bba6a

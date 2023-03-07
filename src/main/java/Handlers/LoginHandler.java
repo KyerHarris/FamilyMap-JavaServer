@@ -40,8 +40,8 @@ public class LoginHandler implements HttpHandler {
 
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         OutputStream resBody = exchange.getResponseBody();
-        gson.toJson((Object) result, (Appendable) resBody);
-        resBody.close();
+        String json = gson.toJson(result);
+        resBody.write(json.getBytes());
 
         exchange.getResponseBody().close();
 

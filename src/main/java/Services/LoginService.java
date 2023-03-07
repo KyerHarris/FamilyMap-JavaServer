@@ -60,4 +60,37 @@ public class LoginService {
     loginResult.setSuccess(true);
     return loginResult;
   }
+
+  public LoginResult login(Connection conn, LoginRequest request){
+    LoginResult loginResult = new LoginResult();
+    try {
+      AuthTokenDao aDao = new AuthTokenDao(conn);
+      UserDao uDao = new UserDao(conn);
+      User user = uDao.find(request.getUsername());
+      if(user == null){
+        loginResult.setError("username not found");
+        return loginResult;
+      }
+      else if(user.getPassword() != request.getPassword()){
+        loginResult.setError("password not correct");
+        return loginResult;
+      }
+      //Creating and inserting Authtoken
+      UUID uuid = UUID.randomUUID();
+      AuthToken authToken = new AuthToken(uuid.toString(), user.getUsername());
+      aDao.insert(authToken);
+
+      //updating information in loginResult
+      loginResult.setAuthToken(uuid.toString());
+      loginResult.setUsername(user.getUsername());
+      loginResult.setPersonID(user.getPersonID());
+    }
+    catch(DataAccessException error){
+      loginResult.setError("Login Request Failed");
+      return loginResult;
+    }
+
+    loginResult.setSuccess(true);
+    return loginResult;
+  }
 }

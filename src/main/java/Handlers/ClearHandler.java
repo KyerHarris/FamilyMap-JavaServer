@@ -1,6 +1,5 @@
 package Handlers;
 
-import Requests.LoginRequest;
 import Services.ClearService;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -15,9 +14,7 @@ import java.io.OutputStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import Requests.ClearRequest;
 import Results.ClearResult;
-import Services.ClearService;
 
 public class ClearHandler implements HttpHandler {
   @Override
@@ -35,13 +32,12 @@ public class ClearHandler implements HttpHandler {
 
         System.out.println(reqData);
 
-        ClearRequest clearRequest = (ClearRequest)gson.fromJson(reqData, ClearRequest.class);
         ClearService clearService = new ClearService();
-        ClearResult clearResult = clearService.clear(clearRequest);
+        ClearResult clearResult = clearService.clear();
 
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         OutputStream resBody = exchange.getResponseBody();
-        gson.toJson((Object) clearResult, (Appendable) resBody);
+        resBody.write(gson.toJson(clearResult).getBytes());
         resBody.close();
 
         exchange.getResponseBody().close();

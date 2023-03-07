@@ -59,8 +59,9 @@ public class PersonResults {
   private String motherID;
   private String spouseID;
   boolean success;
+  private String error;
 
-  public PersonResults(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, boolean success) {
+  public PersonResults(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
     this.personID=personID;
     this.associatedUsername=associatedUsername;
     this.firstName=firstName;
@@ -70,6 +71,14 @@ public class PersonResults {
     this.motherID=motherID;
     this.spouseID=spouseID;
     this.success=success;
+  }
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error=error;
   }
 
   public Person[] getFamilyTree() {

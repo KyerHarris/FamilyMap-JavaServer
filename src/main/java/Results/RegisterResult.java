@@ -27,12 +27,21 @@ public class RegisterResult {
   private String username;
   private String personID;
   boolean success;
+  private String error;
 
   public RegisterResult(String authtoken, String username, String personID, boolean success) {
     this.authtoken=authtoken;
     this.username=username;
     this.personID=personID;
     this.success=success;
+  }
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error=error;
   }
 
   public String getAuthtoken() {

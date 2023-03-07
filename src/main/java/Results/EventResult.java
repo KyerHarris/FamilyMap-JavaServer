@@ -64,6 +64,7 @@ public class EventResult {
   private String eventType;
   private Integer year;
   private boolean success;
+  private String error;
 
   public EventResult(String eventID, String associatedUsername, String personID, Float latitude, Float longitude, String country, String city, String eventType, Integer year, boolean success) {
     this.eventID=eventID;
@@ -76,6 +77,14 @@ public class EventResult {
     this.eventType=eventType;
     this.year=year;
     this.success=success;
+  }
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error=error;
   }
 
   public Event[] getEvents() {
