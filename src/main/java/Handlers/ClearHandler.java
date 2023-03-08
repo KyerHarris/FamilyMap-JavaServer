@@ -23,14 +23,8 @@ public class ClearHandler implements HttpHandler {
 
     try {
       if (exchange.getRequestMethod().toLowerCase().equals("post")) {
-        Headers reqHeaders = exchange.getRequestHeaders();
-        InputStream reqBody = exchange.getRequestBody();
-        String reqData = readString(reqBody);
-
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-
-        System.out.println(reqData);
 
         ClearService clearService = new ClearService();
         ClearResult clearResult = clearService.clear();

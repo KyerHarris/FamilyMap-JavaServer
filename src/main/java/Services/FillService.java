@@ -16,6 +16,8 @@ public class FillService {
    * @return FillResult
    */
   public FillResult fill(FillRequest request){
-    return null;
+    FillResult result = new FillResult();
+
+    return result;
   }
 }

@@ -4,6 +4,7 @@ import Results.RegisterResult;
 import Requests.RegisterRequest;
 import Requests.LoginRequest;
 import Results.LoginResult;
+import Services.LoginService;
 
 import DataAccess.AuthTokenDao;
 import DataAccess.DataAccessException;
@@ -23,7 +24,7 @@ import java.util.UUID;
  * Logs the user in
  * Returns an authtoken
  */
-public class RegisterService extends LoginService{
+public class RegisterService{
   /**
    * calls the register result createUser function, generate ancestor function
    * as well logs in the new user in the loginRegister
@@ -45,7 +46,8 @@ public class RegisterService extends LoginService{
 
       //logging in the user and getting back the authToken
       LoginRequest loginRequest = new LoginRequest(request.getUsername(), request.getPassword());
-      LoginResult loginResult = login(conn, loginRequest);
+      LoginService loginService = new LoginService();
+      LoginResult loginResult = loginService.login(conn, loginRequest);
       if(loginResult.isSuccess()){
         result.setAuthtoken(loginResult.getAuthToken());
       }
