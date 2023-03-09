@@ -10,8 +10,6 @@ Y
 X
 (src/main/java/Services/EventService.java,3\b\3bc7cc8cf85cf250921d1030b42d5ccdc4360088
 W
-'src/main/java/Services/FillService.java,d\9\d9f184b782fc4e70a81bd7abe86be5704b1a4140
-W
 'src/main/java/Services/LoadService.java,f\f\fff2412c638370d9a5c70478849c239e4c288e28
 Y
 )src/main/java/Services/PersonService.java,2\6\26837abe6593859d739d9dc2da4cf7a21af0b3b7
@@ -19,8 +17,6 @@ Y
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 V
 &src/main/java/DataAccess/EventDao.java,f\b\fb331e6441bea02513c1ae2a75cb4019252e5066
-O
-src/main/java/Model/Person.java,2\2\22aa82eee60b2c619bffc6a6d67dd02c8698be57
 W
 'src/main/java/DataAccess/PersonDao.java,1\2\120c0b1afae946eafba709810cb9faabad4d02a5
 W
@@ -31,12 +27,8 @@ U
 %src/test/java/passoff/ServerTest.java,b\5\b566eb8f0c235a3c927b477abe9fe508612f9309
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-R
-"src/main/java/Model/AuthToken.java,e\6\e6e45c75dee0f967b287cfbb327933073880abe5
 X
 (src/test/java/passoff/PersonDaoTest.java,d\3\d3d4455f0ffb1091cdab1f68d3f5d4d5f8e25aef
-N
-src/main/java/Model/Event.java,1\4\141be353b7c5f1abc4fc5b0743a77e5ae3bb55e2
 Z
 *src/main/java/DataAccess/AuthTokenDao.java,a\0\a08a3f5bcebc273531bfd640ee349f233926a255
 X
@@ -58,8 +50,6 @@ X
 K
 JavaDocs/Handlers/Fill.html,4\c\4c5994dbae43909b4b046e9e948d71222b43623a
 W
-'src/main/java/Handlers/FillHandler.java,3\2\32db730cdbf7247e72957c0911a39a1d07a6214e
-W
 'src/main/java/Handlers/LoadHandler.java,7\f\7fc0c5a5d07b3b95172681f9e28b8798864d6776
 L
 JavaDocs/Handlers/Login.html,3\f\3f9a4c20320287392e7921201ddf99c33c5e7be2
@@ -73,16 +63,12 @@ O
 JavaDocs/Handlers/Register.html,0\8\08e441fc1abe93f7e7fcd6701b2a03f55bf411b3
 W
 'src/main/java/Handlers/FileHandler.java,0\b\0b3c100f4db22a5a4e58f81336745a6f8a9bba6a
-X
-(src/main/java/Handlers/ClearHandler.java,b\7\b78cff9ef5f13cc1a5c543fdcb8333342a1cddd2
 V
 &src/main/java/Results/ClearResult.java,8\f\8f5dbf283c59d2edd790ad3b22757b01c4bdd8d7
 X
 (src/main/java/Services/ClearService.java,5\2\525983faf1923b622837dd6ddaf378a68b55b5eb
 V
 &src/main/java/Results/EventResult.java,9\e\9e98ba31ce0c23e86cacb7b3cde49fd666789089
-U
-%src/main/java/Results/FillResult.java,c\9\c9d68aedc2831312c6e27ad3a771d5f156658dad
 W
 'src/main/java/Requests/LoadRequest.java,3\5\35f8cff60f09705a4e2dd319e4c22f6d1e10f078
 U
@@ -93,3 +79,13 @@ X
 (src/main/java/Results/PersonResults.java,7\b\7b6fa300bd77f299583fc9f3ee212e36487b2df0
 I
 src/main/java/Server.java,e\c\ecc6492793dffc43783ce29b8ef95b5f8da90998
+Y
+)src/main/java/Results/RegisterResult.java,a\f\af0a7fd5990d218d580783179d93d57554c9d585
+X
+(src/main/java/Services/LoginService.java,6\b\6b454c2a40b3bf9da02d8e377b63fb142eb887ac
+[
++src/main/java/Handlers/RegisterHandler.java,1\1\11bb16f0a48565d0491353c83bccde49f8a0f5b7
+X
+(src/main/java/Handlers/ClearHandler.java,b\7\b78cff9ef5f13cc1a5c543fdcb8333342a1cddd2
+[
++src/main/java/Services/RegisterService.java,7\d\7dee84304786b0d24eb5fa38680818e6526464d2

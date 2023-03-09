@@ -9,6 +9,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +20,7 @@ public class FillHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     boolean success = false;
+    int defaultGenerations = 4;
 
     try {
       if (exchange.getRequestMethod().toLowerCase().equals("post")) {
@@ -26,22 +28,20 @@ public class FillHandler implements HttpHandler {
         String[] input = url.split("/");
 
         if(input.length > 0) {
-          StringBuilder reqData = new StringBuilder();
-
-          if(input.length > 1){
-
-          }
-          else{
-
-          }
           GsonBuilder builder=new GsonBuilder();
           Gson gson=builder.create();
 
-          System.out.println(reqData);
+          FillRequest request= new FillRequest();
+          request.setUsername(input[0]);
 
-          FillRequest request=(FillRequest) gson.fromJson(reqData.toString(), FillRequest.class);
+          if(input.length > 1){
+            request.setGenerations(Integer.parseInt(input[1]));
+          }
+          else {
+            request.setGenerations(defaultGenerations);
+          }
           FillService service=new FillService();
-          FillResult result=service.fill(request);
+          FillResult result = service.fill(request);
 
 
           exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

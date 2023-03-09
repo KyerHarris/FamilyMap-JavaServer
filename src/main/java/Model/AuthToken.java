@@ -23,6 +23,8 @@ public class AuthToken {
     this.username=username;
   }
 
+  public AuthToken(){}
+
   public String getAuthtoken() {
     return authtoken;
   }

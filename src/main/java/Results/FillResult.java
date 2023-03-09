@@ -9,7 +9,7 @@ public class FillResult {
    * boolean success
    * Whether the request succeeded or failed
    */
-  private boolean success;
+  private boolean success = false;
   private String error;
 
   public boolean isSuccess() {
