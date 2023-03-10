@@ -9,8 +9,17 @@ public class FillResult {
    * boolean success
    * Whether the request succeeded or failed
    */
+  private String message;
   private boolean success = false;
   private String error;
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message=message;
+  }
 
   public boolean isSuccess() {
     return success;

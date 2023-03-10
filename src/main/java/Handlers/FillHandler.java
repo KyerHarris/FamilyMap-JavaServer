@@ -9,7 +9,6 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,15 +42,24 @@ public class FillHandler implements HttpHandler {
           FillService service=new FillService();
           FillResult result = service.fill(request);
 
-
-          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-          OutputStream resBody=exchange.getResponseBody();
-          String json=gson.toJson(result);
-          resBody.write(json.getBytes());
+          if(result.isSuccess()) {
+            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+            OutputStream resBody = exchange.getResponseBody();
+            double numPersons = (Math.pow(2, request.getGenerations() + 1) - 1);
+            result.setMessage("successfully added " + numPersons + " persons and " + ((numPersons * 3) - 1 ) + " events to the database.");
+            String json = gson.toJson(result);
+            resBody.write(json.getBytes());
+          }
+          else{
+            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+            OutputStream resBody = exchange.getResponseBody();
+            String json = gson.toJson(result);
+            resBody.write(json.getBytes());
+          }
 
           exchange.getResponseBody().close();
 
-          success=true;
+          success = true;
         }
       }
 

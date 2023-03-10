@@ -5,6 +5,9 @@ import Requests.RegisterRequest;
 import Requests.LoginRequest;
 import Results.LoginResult;
 import Services.LoginService;
+import Requests.FillRequest;
+import Results.FillResult;
+import Services.FillService;
 
 import DataAccess.AuthTokenDao;
 import DataAccess.DataAccessException;
@@ -59,7 +62,17 @@ public class RegisterService{
       //setting personID & username
       result.setPersonID(uuid.toString());
       result.setUsername(request.getUsername());
-      //Call fill
+      //filling tree
+      FillRequest fillRequest = new FillRequest(request.getUsername());
+      FillService fillService = new FillService();
+      FillResult fillResult = fillService.fill(fillRequest, conn);
+      if(!fillResult.isSuccess()){
+        result.setError(fillResult.getError());
+        db.closeConnection(false);
+        return result;
+      }
+
+
       db.closeConnection(true);
     }
     catch(DataAccessException error){

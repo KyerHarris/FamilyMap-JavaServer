@@ -6,6 +6,7 @@ import Model.Person;
 import Requests.FillRequest;
 import Results.FillResult;
 import java.io.FileNotFoundException;
+import Model.User;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -37,14 +38,32 @@ public class FillService {
    * @return FillResult
    */
   public FillResult fill(FillRequest request){
-    FillResult result = new FillResult();
-    username = request.getUsername();
+    FillResult result = null;
     Database db = new Database();
     try{
       Connection conn = db.getConnection();
-      UserDao uDao = new UserDao(conn);
+      result = fill(request, conn);
+      if(result.isSuccess()){
+        db.closeConnection(true);
+      }
+      else{
+        db.closeConnection(false);
+      }
+    }
+    catch(DataAccessException error){
+      error.printStackTrace();
+      System.out.println("failed to close database");
+    }
+    return result;
+  }
 
-      if(uDao.find(username) != null) {
+  public FillResult fill(FillRequest request, Connection conn){
+    FillResult result = new FillResult();
+    username = request.getUsername();
+    try{
+      UserDao uDao = new UserDao(conn);
+      User user = uDao.find(username);
+      if(user.getUsername() != null) {
         //Import names and locations
         GsonBuilder builder=new GsonBuilder();
         Gson gson=builder.create();
@@ -59,7 +78,6 @@ public class FillService {
           snames = (Snames) gson.fromJson(reader, Snames.class);
         } catch (FileNotFoundException error) {
           result.setError("Could not load files");
-          db.closeConnection(false);
           return result;
         }
 
@@ -68,13 +86,11 @@ public class FillService {
       }
       else{
         result.setError("User does not exist");
-        db.closeConnection(false);
         return result;
       }
     }
     catch(DataAccessException error){
       result.setError("Failed to fill ancestry");
-      db.closeConnection(false);
       return result;
     }
 
@@ -105,18 +121,41 @@ public class FillService {
       }
     }
     //setting person information
-    Person person = generatePersonData(generations, gender, father, mother);
+    Person person = null;
+    if(generations > 1) {
+      person = generatePersonData(generations, gender, father, mother);
+    }
+    else{
+      person = generatePersonData(generations, gender);
+    }
+    Event birth = generateBirth(generations, person);
+    Event death = generateDeath(generations, person);
 
     try{
       pDao.insert(person);
-      //creating and inserting birth & death
-      eDao.insert(generateBirth(generations, person));
-      eDao.insert(generateDeath(generations, person));
     }
     catch(DataAccessException error){
       error.printStackTrace();
-      System.out.println("error inserting person or events");
+      System.out.println("error inserting personID " + person.getPersonID());
     }
+
+    try{
+      eDao.insert(birth);
+    }
+    catch(DataAccessException error){
+      error.printStackTrace();
+      System.out.println("error inserting eventID " + birth.getEventID());
+    }
+
+    try{
+      eDao.insert(death);
+    }
+    catch(DataAccessException error){
+      error.printStackTrace();
+      System.out.println("error inserting eventID " + death.getEventID());
+    }
+
+
 
     return person;
   }
@@ -132,12 +171,32 @@ public class FillService {
     marriage.setLongitude(marriageLocation.longitude);
     marriage.setAssociatedUsername(username);
     marriage.setEventType("marriage");
-    marriage.setYear((int)Math.floor(Math.random() *((baseYear - (generations * 10)) - (baseYear - (generations * 20)) + 1) + (generations * 20)));
+    marriage.setYear((int)Math.floor(Math.random() * ((baseYear - (generations * 10)) - (baseYear - (generations * 20)) + 1) + (generations * 20)));
     marriage.setPersonID(mother.getPersonID());
     marriage.setSecondID(father.getPersonID());
     marriage.setEventID(marriageID.toString());
 
     return marriage;
+  }
+
+  private Person generatePersonData(int generations, String gender){
+    Person person = new Person();
+    UUID personID = UUID.randomUUID();
+    int firstName;
+
+    if(gender.equals("m")) {
+      person.setFirstName(mnames.data[(int)Math.floor(Math.random() * (mnames.data.length + 1))]);
+    }
+    else{
+      person.setFirstName(fnames.data[(int)Math.floor(Math.random() * (fnames.data.length + 1))]);
+    }
+    int lastName = (int)Math.floor(Math.random() * (snames.data.length + 1));
+    person.setPersonID(personID.toString());
+    person.setAssociatedUsername(username);
+    person.setLastName(snames.data[lastName]);
+    person.setGender(gender);
+
+    return person;
   }
 
   private Person generatePersonData(int generations, String gender, Person father, Person mother){

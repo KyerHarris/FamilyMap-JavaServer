@@ -13,6 +13,12 @@ public class FillRequest {
   private String username;
   private int generations;
 
+  public FillRequest(){}
+
+  public FillRequest(String username) {
+    this.username=username;
+  }
+
   public String getUsername() {
     return username;
   }
