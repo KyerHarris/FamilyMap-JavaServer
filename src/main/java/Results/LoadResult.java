@@ -12,7 +12,7 @@ public class LoadResult {
    * Whether the request succeeded or failed
    */
   private boolean success;
-  private String error;
+  private String message;
 
   public boolean isSuccess() {
     return success;
@@ -22,11 +22,11 @@ public class LoadResult {
     this.success=success;
   }
 
-  public String getError() {
-    return error;
+  public String getMessage() {
+    return message;
   }
 
-  public void setError(String error) {
-    this.error=error;
+  public void setMessage(String error) {
+    this.message = error;
   }
 }
