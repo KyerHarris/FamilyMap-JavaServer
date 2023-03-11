@@ -8,7 +8,7 @@ import Model.Person;
  * OR
  * Returns ALL family members of the current user. The current user is determined by the provided authtoken.
  */
-public class PersonResults {
+public class PersonResult {
   /**
    * Person[]
    * All persons related to the person and their family tree
@@ -58,27 +58,26 @@ public class PersonResults {
   private String fatherID;
   private String motherID;
   private String spouseID;
-  boolean success;
-  private String error;
+  boolean success = false;
+  private String message;
 
-  public PersonResults(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
-    this.personID=personID;
-    this.associatedUsername=associatedUsername;
-    this.firstName=firstName;
-    this.lastName=lastName;
-    this.gender=gender;
-    this.fatherID=fatherID;
-    this.motherID=motherID;
-    this.spouseID=spouseID;
-    this.success=success;
+  public void setInfo(Person person){
+    personID = person.getPersonID();
+    associatedUsername = person.getAssociatedUsername();
+    firstName = person.getFirstName();
+    lastName = person.getLastName();
+    gender = person.getGender();
+    fatherID = person.getFatherID();
+    motherID = person.getMotherID();
+    spouseID = person.getSpouseID();
   }
 
-  public String getError() {
-    return error;
+  public String getMessage() {
+    return message;
   }
 
-  public void setError(String error) {
-    this.error=error;
+  public void setMessage(String message) {
+    this.message=message;
   }
 
   public Person[] getFamilyTree() {

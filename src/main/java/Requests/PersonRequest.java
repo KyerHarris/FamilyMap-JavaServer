@@ -11,6 +11,15 @@ public class PersonRequest {
    * string personID
    */
   private String personID;
+  private String authToken;
+
+  public String getAuthToken() {
+    return authToken;
+  }
+
+  public void setAuthToken(String authToken) {
+    this.authToken=authToken;
+  }
 
   public String getPersonID() {
     return personID;

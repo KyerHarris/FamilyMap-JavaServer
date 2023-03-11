@@ -10,7 +10,16 @@ public class EventRequest {
   /**
    * eventId
    */
-  String eventID;
+  private String eventID;
+  private String authToken;
+
+  public String getAuthToken() {
+    return authToken;
+  }
+
+  public void setAuthToken(String authToken) {
+    this.authToken=authToken;
+  }
 
   public String getEventID() {
     return eventID;

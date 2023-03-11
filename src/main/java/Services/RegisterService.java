@@ -65,6 +65,7 @@ public class RegisterService{
       //filling tree
       FillRequest fillRequest = new FillRequest(request.getUsername());
       FillService fillService = new FillService();
+      fillRequest.setGenerations(4);
       FillResult fillResult = fillService.fill(fillRequest, conn);
       if(!fillResult.isSuccess()){
         result.setError(fillResult.getError());

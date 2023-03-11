@@ -104,7 +104,7 @@ public class FillService {
     Person mother = null;
     Person father = null;
 
-    if(generations > 1){
+    if(generations > 0){
       //creating parents
       mother = generatePerson("f", generations - 1, conn);
       father = generatePerson("m", generations - 1, conn);
@@ -122,7 +122,7 @@ public class FillService {
     }
     //setting person information
     Person person = null;
-    if(generations > 1) {
+    if(generations > 0) {
       person = generatePersonData(generations, gender, father, mother);
     }
     else{
@@ -154,8 +154,6 @@ public class FillService {
       error.printStackTrace();
       System.out.println("error inserting eventID " + death.getEventID());
     }
-
-
 
     return person;
   }
@@ -204,7 +202,7 @@ public class FillService {
     UUID personID = UUID.randomUUID();
     int firstName;
 
-    if(generations > 1){
+    if(generations > 0){
       person.setFatherID(father.getPersonID());
       person.setMotherID(mother.getPersonID());
     }

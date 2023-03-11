@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * PersonDao creates, edits, and deletes from the Person table
@@ -42,7 +43,7 @@ public class PersonDao {
       stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DataAccessException("Error encountered while inserting an event into the database");
+      throw new DataAccessException("Error encountered while inserting a person into the database");
     }
   }
 
@@ -69,9 +70,35 @@ public class PersonDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DataAccessException("Error encountered while finding an event in the database");
+      throw new DataAccessException("Error encountered while finding a person in the database");
     }
+  }
 
+  public Person[] getFamilyTree(String username) throws DataAccessException{
+    Person[] tree = new Person[0];
+    ResultSet rs;
+    String sql = "SELECT * FROM Person WHERE associatedUsername = ?;";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+      stmt.setString(1, username);
+      rs = stmt.executeQuery();
+      int i = 0;
+      while (rs.next()) {
+        Person person = new Person(rs.getString("personID"), rs.getString("associatedUsername"), rs.getString("firstName"), rs.getString("lastName"),
+                rs.getString("gender"), rs.getString("fatherId"), rs.getString("motherID"), rs.getString("spouseID"));
+        Person[] temp = new Person[i + 1];
+        for (int j=0; j < tree.length; j++) {
+          temp[j] = tree[j];
+        }
+        temp[i] = person;
+        
+        tree = temp;
+        i++;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new DataAccessException("Error encountered while finding a person in the database");
+    }
+    return tree;
   }
 
   /**
@@ -84,7 +111,7 @@ public class PersonDao {
       stmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new DataAccessException("Error encountered while clearing the event table");
+      throw new DataAccessException("Error encountered while clearing the person table");
     }
   }
 }

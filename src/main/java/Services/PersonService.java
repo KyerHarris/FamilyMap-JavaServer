@@ -1,7 +1,14 @@
 package Services;
 
+import DataAccess.DataAccessException;
 import Requests.PersonRequest;
-import Results.PersonResults;
+import Results.PersonResult;
+import DataAccess.PersonDao;
+import DataAccess.AuthTokenDao;
+import Model.Person;
+import Model.AuthToken;
+
+import java.sql.Connection;
 
 /**
  * PersonService
@@ -15,8 +22,31 @@ public class PersonService {
    * @param request
    * @return the information on that person
    */
-  public PersonResults personID(PersonRequest request){
-    return null;
+  public PersonResult findPerson(PersonRequest request, Connection conn){
+    PersonResult result = new PersonResult();
+    PersonDao pDao = new PersonDao(conn);
+    AuthTokenDao aDao = new AuthTokenDao(conn);
+
+    try {
+      Person person = pDao.find(request.getPersonID());
+      if(person.getAssociatedUsername().equals(aDao.find(request.getAuthToken()).getUsername())){
+        result.setInfo(person);
+      }
+      else{
+        result.setMessage("Error: user cannot access this person");
+        result.setSuccess(false);
+        return result;
+      }
+    }
+    catch (DataAccessException e){
+      e.printStackTrace();
+      result.setSuccess(false);
+      result.setMessage("Error: failed to access Person Database");
+      return result;
+    }
+
+    result.setSuccess(true);
+    return result;
   }
 
   /**
@@ -24,7 +54,22 @@ public class PersonService {
    * @param request
    * @return Json string of the tree
    */
-  public PersonResults personTree(PersonRequest request){
-    return null;
+  public PersonResult personTree(PersonRequest request, Connection conn){
+    PersonResult result = new PersonResult();
+    PersonDao pDao = new PersonDao(conn);
+    AuthTokenDao aDao = new AuthTokenDao(conn);
+
+    try{
+      String username = aDao.find(request.getAuthToken()).getUsername();
+      result.setFamilyTree(pDao.getFamilyTree(username));
+    }
+    catch(DataAccessException e){
+      e.printStackTrace();
+      result.setSuccess(false);
+      result.setMessage("Error: failed to access Database");
+    }
+
+    result.setSuccess(true);
+    return result;
   }
 }

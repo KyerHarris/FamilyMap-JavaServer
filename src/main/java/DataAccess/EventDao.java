@@ -75,7 +75,35 @@ public class EventDao {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding an event in the database");
         }
+    }
 
+    public Event[] getFamilyEvents(String username) throws DataAccessException{
+        Event[] tree = new Event[0];
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                Event event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
+                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
+                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
+                        rs.getInt("Year"));
+                Event[] temp = new Event[i + 1];
+                for (int j=0; j < tree.length; j++) {
+                    temp[j] = tree[j];
+                }
+                temp[i] = event;
+
+                tree = temp;
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
+        return tree;
     }
 
     /**

@@ -64,27 +64,26 @@ public class EventResult {
   private String eventType;
   private Integer year;
   private boolean success;
-  private String error;
+  private String message;
 
-  public EventResult(String eventID, String associatedUsername, String personID, Float latitude, Float longitude, String country, String city, String eventType, Integer year, boolean success) {
-    this.eventID=eventID;
-    this.associatedUsername=associatedUsername;
-    this.personID=personID;
-    this.latitude=latitude;
-    this.longitude=longitude;
-    this.country=country;
-    this.city=city;
-    this.eventType=eventType;
-    this.year=year;
-    this.success=success;
+  public void setInfo(Event event){
+    eventID = event.getEventID();
+    associatedUsername = event.getAssociatedUsername();
+    personID = event.getPersonID();
+    latitude = event.getLatitude();
+    longitude = event.getLongitude();
+    country = event.getCountry();
+    city = event.getCity();
+    eventType = event.getEventType();
+    year = event.getYear();
   }
 
-  public String getError() {
-    return error;
+  public String getMessage() {
+    return message;
   }
 
-  public void setError(String error) {
-    this.error=error;
+  public void setMessage(String message) {
+    this.message=message;
   }
 
   public Event[] getEvents() {

@@ -22,9 +22,10 @@ public class LoadService {
    */
   public LoadResult load(LoadRequest request){
     LoadResult result = new LoadResult();
+    Database db = new Database();
+
 
     try {
-      Database db = new Database();
       Connection conn = db.getConnection();
       EventDao eDao = new EventDao(conn);
       PersonDao pDao = new PersonDao(conn);
@@ -42,8 +43,10 @@ public class LoadService {
         Person person = request.getPersons()[i];
         pDao.insert(person);
       }
+      db.closeConnection(true);
     }
     catch(DataAccessException error){
+      db.closeConnection(false);
       error.printStackTrace();
       result.setMessage("Error: failed to load data");
       result.setSuccess(false);
