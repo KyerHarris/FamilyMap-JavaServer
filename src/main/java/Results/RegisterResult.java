@@ -1,7 +1,5 @@
 package Results;
 
-import Model.AuthToken;
-
 /**
  * RegisterResult
  * Returns an authtoken as well as the username and personID of who was logged in, and if the register succeeded
@@ -27,14 +25,14 @@ public class RegisterResult {
   private String username;
   private String personID;
   boolean success = false;
-  private String error;
+  private String message;
 
-  public String getError() {
-    return error;
+  public String getMessage() {
+    return message;
   }
 
-  public void setError(String error) {
-    this.error=error;
+  public void setMessage(String message) {
+    this.message=message;
   }
 
   public String getAuthtoken() {

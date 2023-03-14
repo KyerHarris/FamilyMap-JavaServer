@@ -10,14 +10,14 @@ public class ClearResult {
    * Whether the request succeeded or failed
    */
   private boolean success = false;
-  private String error;
+  private String message;
 
-  public String getError() {
-    return error;
+  public String getMessage() {
+    return message;
   }
 
-  public void setError(String error) {
-    this.error=error;
+  public void setMessage(String message) {
+    this.message=message;
   }
 
   public boolean isSuccess() {

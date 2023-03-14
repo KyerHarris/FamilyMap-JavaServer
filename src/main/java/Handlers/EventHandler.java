@@ -23,57 +23,50 @@ public class EventHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     boolean success = false;
-    Database db = new Database();
     try {
-      Connection conn = db.getConnection();
+      EventResult result = null;
+      GsonBuilder builder = new GsonBuilder();
+      Gson gson = builder.create();
       if (exchange.getRequestMethod().toLowerCase().equals("get")) {
         Headers reqHeaders = exchange.getRequestHeaders();
         if (reqHeaders.containsKey("Authorization")) {
-          AuthTokenDao aDao = new AuthTokenDao(conn);
           String authToken = reqHeaders.getFirst("Authorization");
-          if (aDao.find(authToken) != null) {
-            InputStream reqBody = exchange.getRequestBody();
-            String reqData = readString(reqBody);
-
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-
-            System.out.println(reqData);
-
-            EventRequest request = new EventRequest();
-            EventService service = new EventService();
-            EventResult result = null;
-            request.setAuthToken(authToken);
+          InputStream reqBody = exchange.getRequestBody();
+          String reqData = readString(reqBody);
 
 
-            if(exchange.getRequestURI().toString().length() > 6) {
-              String eventID = exchange.getRequestURI().toString().substring(7);
-              request.setEventID(eventID);
-              result = service.findEvent(request, conn);
-            }
-            else{
-              result = service.eventTree(request, conn);
-            }
+          System.out.println(reqData);
 
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-            OutputStream resBody = exchange.getResponseBody();
-            String json = gson.toJson(result);
-            resBody.write(json.getBytes());
+          EventRequest request = new EventRequest();
+          EventService service = new EventService();
+          request.setAuthToken(authToken);
 
-            exchange.getResponseBody().close();
-            db.closeConnection(true);
-            success = true;
+
+          if(exchange.getRequestURI().toString().length() > 6) {
+            String eventID = exchange.getRequestURI().toString().substring(7);
+            request.setEventID(eventID);
+            result = service.findEvent(request);
           }
+          else{
+            result = service.eventTree(request);
+          }
+
+
+          success = result.isSuccess();
         }
       }
-
       if (!success) {
-        // The HTTP request was invalid somehow, so we return a "bad request"
-        // status code to the client.
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-
-        // We are not sending a response body, so close the response body
-        // output stream, indicating that the response is complete.
+        OutputStream resBody = exchange.getResponseBody();
+        String json = gson.toJson(result);
+        resBody.write(json.getBytes());
+        exchange.getResponseBody().close();
+      }
+      else{
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+        OutputStream resBody = exchange.getResponseBody();
+        String json = gson.toJson(result);
+        resBody.write(json.getBytes());
         exchange.getResponseBody().close();
       }
     }
@@ -89,12 +82,6 @@ public class EventHandler implements HttpHandler {
 
       // Display/log the stack trace
       e.printStackTrace();
-    }
-    catch(DataAccessException e){
-      db.closeConnection(false);
-      e.printStackTrace();
-      exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
-      exchange.getResponseBody().close();
     }
   }
 

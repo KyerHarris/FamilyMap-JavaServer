@@ -21,26 +21,26 @@ public class LoginResult {
    * bool success
    * Whether the request succeeded or failed
    */
-  private String authToken;
+  private String authtoken;
   private String username;
   private String personID;
   private boolean success = false;
-  private String error;
+  private String message;
 
-  public String getError(){
-    return error;
+  public String getMessage(){
+    return message;
   }
 
-  public void setError(String message){
-    error = message;
+  public void setMessage(String message){
+    this.message= message;
   }
 
-  public String getAuthToken() {
-    return authToken;
+  public String getAuthtoken() {
+    return authtoken;
   }
 
-  public void setAuthToken(String authToken) {
-    this.authToken=authToken;
+  public void setAuthtoken(String authtoken) {
+    this.authtoken=authtoken;
   }
 
   public String getUsername() {

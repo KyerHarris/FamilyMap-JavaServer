@@ -19,8 +19,6 @@ import Handlers.*;
 */
 public class Server {
 
-  //TODO: how to get started document in canvas
-
   // The maximum number of waiting incoming connections to queue.
   // While this value is necessary, for our purposes it is unimportant.
   // Take CS 460 for a deeper understanding of what it means.

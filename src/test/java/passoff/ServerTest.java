@@ -61,7 +61,7 @@ public class ServerTest {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static String host = "localhost";
-    private static String port = "8080";
+    private static String port = "1521";
     private static boolean displayCurrentTest = true;
     private Proxy proxy;
 
@@ -80,18 +80,6 @@ public class ServerTest {
     /**
      * Attempts to make a connection to your server that you wrote
      */
-    @BeforeEach
-    @DisplayName("Setup")
-    public void setup(TestInfo testInfo) throws ServerConnectionException {
-        logger.info("Setting up " + testInfo.getDisplayName() + "...");
-        proxy = new Proxy();
-        /*
-            If a test fail on line 91 (the one following this comment),
-            make sure the host and port variables a couple dozen lines
-            up are set to the correct parameters.
-        */
-        proxy.clear(host, port);
-    }
 
     /**
      * Required API calls:
@@ -594,7 +582,7 @@ public class ServerTest {
     @Test
     @DisplayName("Realistic Fill Death Test")
     public void testRealisticDeathEvents(TestInfo testInfo) {
-        printTestName(testInfo);
+        //printTestName(testInfo);
         try {
             //We are calling the register api for a user named sheila
             RegisterResult registerResult = proxy.register(host, port, registerRequest);
@@ -714,6 +702,7 @@ public class ServerTest {
         int minEvents = minimumPeople * 2;
         try {
             //We are calling the register api for a user named sheila
+
             proxy.register(host, port, registerRequest);
             //We are calling the fill api using the fillRequest we created near the beginning of this test
             FillResult result = proxy.fill(host, port, fillRequest);

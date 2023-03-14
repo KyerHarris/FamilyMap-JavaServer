@@ -30,17 +30,17 @@ public class ClearService {
       uDao.clear();
       pDao.clear();
       eDao.clear();
-
-      clearResult.setSuccess(true);
-      db.closeConnection(true);
     }
     catch (DataAccessException error){
-      clearResult.setError("failed to clear database");
+      clearResult.setMessage("failed to clear database");
       error.printStackTrace();
       db.closeConnection(false);
       return clearResult;
     }
 
+    clearResult.setSuccess(true);
+    clearResult.setMessage("clear succeeded");
+    db.closeConnection(true);
     return clearResult;
   }
 }

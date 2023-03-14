@@ -53,7 +53,7 @@ public class EventResult {
     * boolean success;
     * Whether the request succeeded or failed
     */
-  private Event[] events;
+  private Event[] data;
   private String eventID;
   private String associatedUsername;
   private String personID;
@@ -86,12 +86,12 @@ public class EventResult {
     this.message=message;
   }
 
-  public Event[] getEvents() {
-    return events;
+  public Event[] getData() {
+    return data;
   }
 
-  public void setEvents(Event[] events) {
-    this.events=events;
+  public void setData(Event[] data) {
+    this.data=data;
   }
 
   public String getEventID() {

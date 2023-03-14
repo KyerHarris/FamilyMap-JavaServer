@@ -20,44 +20,40 @@ public class RegisterHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     boolean success = false;
-
+    RegisterResult result = null;
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
     try {
       if (exchange.getRequestMethod().toLowerCase().equals("post")) {
         Headers reqHeaders = exchange.getRequestHeaders();
         InputStream reqBody = exchange.getRequestBody();
         String reqData = readString(reqBody);
 
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
         System.out.println(reqData);
 
         RegisterRequest request = (RegisterRequest)gson.fromJson(reqData, RegisterRequest.class);
         RegisterService service = new RegisterService();
-        RegisterResult result = service.register(request);
+        result = service.register(request);
 
+        success = result.isSuccess();
+      }
 
+      if (!success) {
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+        OutputStream resBody = exchange.getResponseBody();
+        String json = gson.toJson(result);
+        resBody.write(json.getBytes());
+        exchange.getResponseBody().close();
+      }
+      else{
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         OutputStream resBody = exchange.getResponseBody();
         String json = gson.toJson(result);
         resBody.write(json.getBytes());
-
-        exchange.getResponseBody().close();
-
-        success = true;
-      }
-
-      if (!success) {
-        // The HTTP request was invalid somehow, so we return a "bad request"
-        // status code to the client.
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-
-        // We are not sending a response body, so close the response body
-        // output stream, indicating that the response is complete.
         exchange.getResponseBody().close();
       }
     }
-    catch (IOException e) {
+    catch (Exception e) {
       // Some kind of internal error has occurred inside the server (not the
       // client's fault), so we return an "internal server error" status code
       // to the client.

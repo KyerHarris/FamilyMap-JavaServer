@@ -12,39 +12,12 @@ public class FileHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
 
-    // This handler allows a "Ticket to Ride" player to claim ability
-    // route between two cities (part of the Ticket to Ride game).
-    // The HTTP request body contains a JSON object indicating which
-    // route the caller wants to claim (a route is defined by two cities).
-    // This implementation is clearly unrealistic, because it
-    // doesn't actually do anything other than print out the received JSON string.
-    // It is also unrealistic in that it accepts only one specific
-    // hard-coded auth token.
-    // However, it does demonstrate the following:
-    // 1. How to get the HTTP request type (or, "method")
-    // 2. How to access HTTP request headers
-    // 3. How to read JSON data from the HTTP request body
-    // 4. How to return the desired status code (200, 404, etc.)
-    //		in an HTTP response
-    // 5. How to check an incoming HTTP request for an auth token
 
     boolean success = false;
 
     try {
-      // Determine the HTTP request type (GET, POST, etc.).
-      // Only allow POST requests for this operation.
-      // This operation requires a POST request, because the
-      // client is "posting" information to the server for processing.
+
       if (exchange.getRequestMethod().toLowerCase().equals("get")) {
-
-        /*
-        Headers reqHeaders = exchange.getRequestHeaders();
-        InputStream reqBody = exchange.getRequestBody();
-        String reqData = readString(reqBody);
-        System.out.println(reqData);
-         */
-
-        //enter as a get method with a url
         String urlPath = exchange.getRequestURI().toString();
         if(urlPath.equals(File.separator) || urlPath == null || urlPath.equals("/")){
           StringBuilder temp = new StringBuilder();
@@ -71,7 +44,11 @@ public class FileHandler implements HttpHandler {
           resBody.close();
         }
         else{
+          file = new File("web/HTML/404.html");
           exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+          OutputStream resBody = exchange.getResponseBody();
+          Files.copy(file.toPath(), resBody);
+          resBody.close();
         }
         // We are not sending a response body, so close the response body
         // output stream, indicating that the response is complete.

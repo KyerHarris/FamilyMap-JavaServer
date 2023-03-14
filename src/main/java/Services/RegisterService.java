@@ -4,10 +4,8 @@ import Results.RegisterResult;
 import Requests.RegisterRequest;
 import Requests.LoginRequest;
 import Results.LoginResult;
-import Services.LoginService;
 import Requests.FillRequest;
 import Results.FillResult;
-import Services.FillService;
 
 import DataAccess.AuthTokenDao;
 import DataAccess.DataAccessException;
@@ -43,21 +41,27 @@ public class RegisterService{
       UserDao uDao = new UserDao(conn);
       UUID uuid = UUID.randomUUID();
 
-      //putting the user into the database
-      User user = new User(request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstName(), request.getLastName(), request.getGender(), uuid.toString());
-      uDao.insert(user);
+      if (uDao.find(request.getUsername()) == null) {
+        //putting the user into the database
+        User user=new User(request.getUsername(), request.getPassword(), request.getEmail(), request.getFirstName(), request.getLastName(), request.getGender(), uuid.toString());
+        uDao.insert(user);
+      }
+      else{
+        result.setMessage("Error: Username already taken");
+        result.setSuccess(false);
+        return result;
+      }
 
       //logging in the user and getting back the authToken
       LoginRequest loginRequest = new LoginRequest(request.getUsername(), request.getPassword());
       LoginService loginService = new LoginService();
       LoginResult loginResult = loginService.login(conn, loginRequest);
-      if(loginResult.isSuccess()){
-        result.setAuthtoken(loginResult.getAuthToken());
+      result.setSuccess(loginResult.isSuccess());
+      if(result.isSuccess()){
+        result.setAuthtoken(loginResult.getAuthtoken());
       }
       else{
-        result.setError(loginResult.getError());
-        db.closeConnection(false);
-        return result;
+        result.setMessage(loginResult.getMessage());
       }
       //setting personID & username
       result.setPersonID(uuid.toString());
@@ -67,22 +71,24 @@ public class RegisterService{
       FillService fillService = new FillService();
       fillRequest.setGenerations(4);
       FillResult fillResult = fillService.fill(fillRequest, conn);
-      if(!fillResult.isSuccess()){
-        result.setError(fillResult.getError());
-        db.closeConnection(false);
-        return result;
+      result.setSuccess(fillResult.isSuccess());
+      if(!result.isSuccess()){
+        result.setMessage(fillResult.getMessage());
       }
-
-
-      db.closeConnection(true);
     }
     catch(DataAccessException error){
-      result.setError("Register Request Failed");
-      db.closeConnection(false);
+      result.setMessage("Error: Register Request Failed");
       return result;
     }
+    finally{
+      if(result.isSuccess()){
+        db.closeConnection(true);
+      }
+      else{
+        db.closeConnection(false);
+      }
+    }
 
-    result.setSuccess(true);
     return result;
   }
 

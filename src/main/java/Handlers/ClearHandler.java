@@ -26,6 +26,8 @@ public class ClearHandler implements HttpHandler {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
+        System.out.println("Clear Request");
+
         ClearService clearService = new ClearService();
         ClearResult clearResult = clearService.clear();
 

@@ -46,7 +46,6 @@ public class Event {
     private String eventID;
     private String associatedUsername;
     private String personID;
-    private String secondID;
     private Float latitude;
     private Float longitude;
     private String country;
@@ -91,14 +90,6 @@ public class Event {
 
     public void setPersonID(String personID) {
         this.personID = personID;
-    }
-
-    public String getSecondID() {
-        return secondID;
-    }
-
-    public void setSecondID(String secondID) {
-        this.secondID=secondID;
     }
 
     public Float getLatitude() {

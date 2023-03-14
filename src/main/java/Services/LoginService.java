@@ -11,6 +11,7 @@ import Model.User;
 import Model.AuthToken;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.UUID;
 
 /**
@@ -27,20 +28,27 @@ public class LoginService {
   public LoginResult login(LoginRequest request){
     LoginResult loginResult = new LoginResult();
     Database db = new Database();
+
     try {
       Connection conn = db.getConnection();
       loginResult = login(conn, request);
-      if(loginResult.isSuccess()) {
+      if(!loginResult.isSuccess()) {
+        return loginResult;
+      }
+    }
+    catch(DataAccessException error){
+      error.printStackTrace();
+      loginResult.setMessage("Error: Login Request Failed");
+      db.closeConnection(false);
+      return loginResult;
+    }
+    finally{
+      if(loginResult.isSuccess()){
         db.closeConnection(true);
       }
       else{
         db.closeConnection(false);
       }
-    }
-    catch(DataAccessException error){
-      loginResult.setError("Login Request Failed");
-      db.closeConnection(false);
-      return loginResult;
     }
 
     return loginResult;
@@ -53,11 +61,11 @@ public class LoginService {
       UserDao uDao = new UserDao(conn);
       User user = uDao.find(request.getUsername());
       if(user == null){
-        loginResult.setError("username not found");
+        loginResult.setMessage("Error: username not found");
         return loginResult;
       }
       else if(!user.getPassword().equals(request.getPassword())){
-        loginResult.setError("password not correct");
+        loginResult.setMessage("Error: password not correct");
         return loginResult;
       }
       //Creating and inserting Authtoken
@@ -66,12 +74,12 @@ public class LoginService {
       aDao.insert(authToken);
 
       //updating information in loginResult
-      loginResult.setAuthToken(uuid.toString());
+      loginResult.setAuthtoken(uuid.toString());
       loginResult.setUsername(user.getUsername());
       loginResult.setPersonID(user.getPersonID());
     }
     catch(DataAccessException error){
-      loginResult.setError("Login Request Failed");
+      loginResult.setMessage("Login Request Failed");
       return loginResult;
     }
 

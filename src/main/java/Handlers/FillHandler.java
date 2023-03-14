@@ -24,6 +24,7 @@ public class FillHandler implements HttpHandler {
     try {
       if (exchange.getRequestMethod().toLowerCase().equals("post")) {
         String url = exchange.getRequestURI().toString().substring(6);
+        System.out.println(url);
         String[] input = url.split("/");
 
         if(input.length > 0) {
@@ -39,14 +40,13 @@ public class FillHandler implements HttpHandler {
           else {
             request.setGenerations(defaultGenerations);
           }
+
           FillService service=new FillService();
           FillResult result = service.fill(request);
 
           if(result.isSuccess()) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             OutputStream resBody = exchange.getResponseBody();
-            double numPersons = (Math.pow(2, request.getGenerations() + 1) - 1);
-            result.setMessage("successfully added " + numPersons + " persons and " + ((numPersons * 3) - 1 ) + " events to the database.");
             String json = gson.toJson(result);
             resBody.write(json.getBytes());
           }

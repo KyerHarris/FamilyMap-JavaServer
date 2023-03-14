@@ -24,7 +24,6 @@ public class LoadService {
     LoadResult result = new LoadResult();
     Database db = new Database();
 
-
     try {
       Connection conn = db.getConnection();
       EventDao eDao = new EventDao(conn);
@@ -32,8 +31,10 @@ public class LoadService {
       UserDao uDao = new UserDao(conn);
 
       for (int i=0; i < request.getUsers().length; i++) {
-        User user=request.getUsers()[i];
-        uDao.insert(user);
+        User user = request.getUsers()[i];
+        if(uDao.find(user.getUsername()) == null) {
+          uDao.insert(user);
+        }
       }
       for (int i=0; i < request.getEvents().length; i++) {
         Event event = request.getEvents()[i];
@@ -43,7 +44,6 @@ public class LoadService {
         Person person = request.getPersons()[i];
         pDao.insert(person);
       }
-      db.closeConnection(true);
     }
     catch(DataAccessException error){
       db.closeConnection(false);
@@ -53,6 +53,7 @@ public class LoadService {
       return result;
     }
 
+    db.closeConnection(true);
     result.setMessage("Successfully added " + request.getUsers().length + " users, " + request.getPersons().length +
             " persons, and " + request.getEvents().length + " events to the database.");
     result.setSuccess(true);

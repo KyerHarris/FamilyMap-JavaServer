@@ -11,7 +11,6 @@ public class FillResult {
    */
   private String message;
   private boolean success = false;
-  private String error;
 
   public String getMessage() {
     return message;
@@ -27,13 +26,5 @@ public class FillResult {
 
   public void setSuccess(boolean success) {
     this.success=success;
-  }
-
-  public String getError() {
-    return error;
-  }
-
-  public void setError(String error) {
-    this.error=error;
   }
 }
